@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 interface FurnitureItem {
   title: string
   price: string | null
@@ -47,7 +49,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results }) => {
         <div className="image-container">
           <h3>Original Room</h3>
           <img 
-            src={`http://localhost:8000${results.original_image}`} 
+            src={`${API_URL}${results.original_image}`} 
             alt="Original room" 
           />
         </div>
@@ -55,7 +57,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results }) => {
         <div className="image-container">
           <h3>Designed Room</h3>
           <img 
-            src={`http://localhost:8000${results.designed_image}`} 
+            src={`${API_URL}${results.designed_image}`} 
             alt="Designed room" 
           />
         </div>
@@ -92,7 +94,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results }) => {
               {item.image_url && (
                 <div className="furniture-image">
                   <img 
-                    src={`http://localhost:8000${item.image_url}`} 
+                    src={`${API_URL}${item.image_url}`} 
                     alt={item.title}
                     onError={(e) => {
                       // Hide image if it fails to load
