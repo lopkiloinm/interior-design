@@ -1,0 +1,464 @@
+/* App.css - Interior Design Agent Styles */
+
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #7c3aed;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --background-color: #f9fafb;
+  --card-background: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Main Content */
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Upload Section */
+.upload-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dropzone {
+  background: var(--card-background);
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  padding: 4rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.dropzone:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.dropzone.active {
+  border-color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.upload-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.upload-content h2 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.upload-hint {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.upload-info {
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.upload-info h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.upload-info ol {
+  list-style-position: inside;
+  line-height: 1.8;
+}
+
+/* Agent Container */
+.agent-container {
+  width: 100%;
+}
+
+.agent-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.left-panel, .right-panel {
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+/* Agent Progress */
+.agent-progress h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-emoji {
+  font-size: 2rem;
+}
+
+.progress-bar-container {
+  position: relative;
+  background: var(--border-color);
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 12px;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.steps-list h4, .messages-log h4 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.steps-list ul {
+  list-style: none;
+}
+
+.steps-list li {
+  padding: 0.5rem 0;
+  color: var(--success-color);
+}
+
+.messages-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.message-item {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.message-time {
+  color: var(--text-secondary);
+  min-width: 80px;
+}
+
+.message-text {
+  color: var(--text-primary);
+}
+
+.errors-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+}
+
+.error-item {
+  color: var(--error-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Design Plan */
+.design-plan h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.markdown-content {
+  line-height: 1.6;
+}
+
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content p {
+  margin-bottom: 1rem;
+}
+
+/* Results Section */
+.results-section h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.image-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.image-container {
+  text-align: center;
+}
+
+.image-container h3 {
+  margin-bottom: 1rem;
+}
+
+.image-container img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.design-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+  background: var(--background-color);
+  border-radius: 8px;
+}
+
+.stat-item h4 {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.furniture-list h3 {
+  margin-bottom: 1.5rem;
+}
+
+.furniture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.furniture-card {
+  background: var(--background-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.furniture-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.furniture-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.furniture-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.furniture-card:hover .furniture-image img {
+  transform: scale(1.05);
+}
+
+.furniture-card h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.furniture-source {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+}
+
+.furniture-category {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.furniture-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.furniture-rating {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.furniture-delivery {
+  color: var(--success-color);
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.product-link:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Reset Button */
+.reset-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.reset-button:hover {
+  background: var(--secondary-color);
+}
+
+/* Footer */
+.app-footer {
+  background: var(--card-background);
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .agent-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-comparison {
+    grid-template-columns: 1fr;
+  }
+  
+  .design-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .furniture-grid {
+    grid-template-columns: 1fr;
+  }
+}
