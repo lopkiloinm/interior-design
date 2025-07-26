@@ -24,6 +24,14 @@ from models import (
 
 logger = logging.getLogger(__name__)
 
+# Import LlamaIndex knowledge base
+try:
+    from design_knowledge import design_kb
+    LLAMAINDEX_AVAILABLE = True
+except ImportError:
+    logger.warning("LlamaIndex not available - design tips will be limited")
+    LLAMAINDEX_AVAILABLE = False
+
 # Load environment variables
 load_dotenv()
 
@@ -394,11 +402,11 @@ Return as JSON:
                             self.plan_markdown += f"\n### {category_display}\n"
                         for idx, product in enumerate(products, 1):
                             price_str = product.get('price', 'Price not available')
-                                # Simplify the title for display
-                                title = product.get('title', 'Unknown')
-                                if len(title) > 60:
-                                    title = title[:57] + "..."
-                                self.plan_markdown += f"{idx}. **{title}** - {price_str}\n"
+                            # Simplify the title for display
+                            title = product.get('title', 'Unknown')
+                            if len(title) > 60:
+                                title = title[:57] + "..."
+                            self.plan_markdown += f"{idx}. **{title}** - {price_str}\n"
                             if product.get('source'):
                                 self.plan_markdown += f"   - Source: {product['source']}\n"
                             if product.get('product_rating'):
