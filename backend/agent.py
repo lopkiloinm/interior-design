@@ -392,19 +392,19 @@ Return as JSON:
                                                     # Use simpler category name in markdown
                             category_display = furniture.get('category', furniture['item'])
                             self.plan_markdown += f"\n### {category_display}\n"
-                            for idx, product in enumerate(products, 1):
-                                price_str = product.get('price', 'Price not available')
+                        for idx, product in enumerate(products, 1):
+                            price_str = product.get('price', 'Price not available')
                                 # Simplify the title for display
                                 title = product.get('title', 'Unknown')
                                 if len(title) > 60:
                                     title = title[:57] + "..."
                                 self.plan_markdown += f"{idx}. **{title}** - {price_str}\n"
-                                if product.get('source'):
-                                    self.plan_markdown += f"   - Source: {product['source']}\n"
-                                if product.get('product_rating'):
-                                    self.plan_markdown += f"   - Rating: {product['product_rating']}⭐ ({product.get('product_reviews', 0)} reviews)\n"
-                                if product.get('delivery'):
-                                    self.plan_markdown += f"   - Delivery: {product['delivery']}\n"
+                            if product.get('source'):
+                                self.plan_markdown += f"   - Source: {product['source']}\n"
+                            if product.get('product_rating'):
+                                self.plan_markdown += f"   - Rating: {product['product_rating']}⭐ ({product.get('product_reviews', 0)} reviews)\n"
+                            if product.get('delivery'):
+                                self.plan_markdown += f"   - Delivery: {product['delivery']}\n"
                     else:
                         # No products found
                         logger.warning(f"No products found for query: {query}")
@@ -493,7 +493,7 @@ Return as JSON:
                 except Exception as e:
                     logger.error(f"Error converting Arcade response: {e}")
                     # Try to return the raw result
-                    return result
+            return result
             
             return {}
         except Exception as e:
@@ -967,9 +967,9 @@ Generate a high-quality interior design image showing the furnished room."""
             # Fallback if no image was generated
             if not image_generated:
                 logger.warning("No image generated, using original as fallback")
-                designed_image_path = f"uploads/designed_{self.session_id}.jpg"
-                import shutil
-                shutil.copy(self.room_image_path, designed_image_path)
+            designed_image_path = f"uploads/designed_{self.session_id}.jpg"
+            import shutil
+            shutil.copy(self.room_image_path, designed_image_path)
             
             self.steps_completed.append("Design Generation")
             self.add_message("✓ Final design generated successfully!")
