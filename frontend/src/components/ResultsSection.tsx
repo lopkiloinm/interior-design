@@ -29,6 +29,7 @@ interface FinalResults {
   furniture_items: FurnitureItem[]
   completion_time: number
   design_description: string
+  voice_narration?: string
 }
 
 interface ResultsSectionProps {
@@ -62,6 +63,20 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({ results }) => {
           />
         </div>
       </div>
+
+      {results.voice_narration && (
+        <div className="voice-narration">
+          <h3>🎙️ Design Narration</h3>
+          <audio 
+            controls 
+            autoPlay
+            src={`${API_URL}${results.voice_narration}`}
+            style={{ width: '100%', marginTop: '10px' }}
+          >
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      )}
 
       <div className="design-stats">
         <div className="stat-item">

@@ -54,6 +54,7 @@ interface FinalResults {
   furniture_items: FurnitureItem[]
   completion_time: number
   design_description: string
+  voice_narration?: string
 }
 
 function App() {

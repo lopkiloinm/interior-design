@@ -32,6 +32,14 @@ except ImportError:
     logger.warning("LlamaIndex not available - design tips will be limited")
     LLAMAINDEX_AVAILABLE = False
 
+# Import Voice Agent
+try:
+    from voice_agent import voice_agent
+    VOICE_AGENT_AVAILABLE = True
+except ImportError:
+    logger.warning("Voice agent not available - voice narration will be disabled")
+    VOICE_AGENT_AVAILABLE = False
+
 # Load environment variables
 load_dotenv()
 
@@ -52,6 +60,7 @@ class InteriorDesignAgent:
         self.furniture_items = []
         self.errors = []
         self.start_time = time.time()
+        self.voice_narration_path = None
         
         # Initialize API clients
         self.openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -82,6 +91,20 @@ class InteriorDesignAgent:
             # Step 4: Generate final design
             self.status = AgentStatus.DESIGNING
             await self.generate_final_design()
+            
+            # Step 5: Generate voice narration (if available)
+            if VOICE_AGENT_AVAILABLE:
+                self.add_message("🎙️ Creating voice narration...")
+                try:
+                    audio_path = await voice_agent.speak_design_results(
+                        self.design_plan, 
+                        self.shopping_results
+                    )
+                    if audio_path:
+                        self.voice_narration_path = audio_path
+                        self.add_message("✨ Voice narration created!")
+                except Exception as e:
+                    logger.warning(f"Voice generation failed: {e}")
             
             self.status = AgentStatus.COMPLETED
             self.add_message("✅ Interior design completed successfully!")
@@ -1071,7 +1094,8 @@ Generate a high-quality interior design image showing the furnished room."""
             "total_cost_estimate": total_cost,
             "furniture_items": [item.dict() for item in self.furniture_items],
             "completion_time": time.time() - self.start_time,
-            "design_description": self.plan_markdown
+            "design_description": self.plan_markdown,
+            "voice_narration": self.voice_narration_path
         }
     
     def stop(self):
