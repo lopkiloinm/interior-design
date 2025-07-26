@@ -6,7 +6,9 @@ import './App.css'
 
 import { UploadSection, AgentProgress, DesignPlan, ResultsSection } from './components'
 
-const API_URL = 'http://localhost:8000'
+// Determine API URL based on environment
+const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD ? '' : 'http://localhost:8000')
 
 // Type definitions
 interface AgentStatus {

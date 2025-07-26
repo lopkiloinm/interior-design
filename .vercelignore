@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+.mypy_cache/
+
+# Node
+node_modules/
+.npm
+.yarn
+
+# Development
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Scripts
+start.sh
+start.bat
+
+# Backend dev files
+backend/.venv/
+backend/__pycache__/
+backend/uploads/
+
+# Tests
+tests/
+*_test.py
+test_*.py 

@@ -12,6 +12,58 @@ An autonomous AI agent that transforms empty rooms into beautifully designed spa
 - **Real-time Progress**: Track the agent's progress through each step
 - **Markdown Reports**: Get detailed design plans in well-structured markdown
 
+## 🚀 Deployment to Vercel
+
+### Prerequisites
+1. A Vercel account
+2. Vercel CLI installed (`npm i -g vercel`)
+3. Environment variables ready:
+   - `OPENAI_API_KEY`
+   - `ARCADE_API_KEY`
+   - `USER_ID` (for Arcade)
+
+### Deployment Steps
+
+1. **Install Vercel CLI** (if not already installed):
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Login to Vercel**:
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy the project**:
+   ```bash
+   vercel
+   ```
+
+4. **Set environment variables** in Vercel dashboard:
+   - Go to your project settings
+   - Navigate to "Environment Variables"
+   - Add the following:
+     - `OPENAI_API_KEY`: Your OpenAI API key
+     - `ARCADE_API_KEY`: Your Arcade API key
+     - `USER_ID`: Your Arcade user ID
+
+5. **Deploy to production**:
+   ```bash
+   vercel --prod
+   ```
+
+### Project Structure for Vercel
+
+- `/api` - Serverless Python functions
+- `/frontend` - React/Vite frontend
+- `vercel.json` - Deployment configuration
+- `requirements.txt` - Python dependencies
+
+### Notes
+- The backend runs as serverless functions
+- Uploads are stored temporarily in `/tmp`
+- For production use, consider using external storage (S3, Cloudinary, etc.)
+
 ## 🏗️ Architecture
 
 ### Backend (FastAPI)
