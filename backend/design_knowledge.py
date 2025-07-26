@@ -5,6 +5,9 @@ from llama_index.core import Document, VectorStoreIndex, Settings
 from llama_index.llms.openai import OpenAI
 from typing import Dict, List
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Design principles knowledge base
 DESIGN_KNOWLEDGE = {
@@ -43,23 +46,46 @@ class DesignKnowledgeBase:
     
     def __init__(self):
         self.indices = {}
-        self._initialize_indices()
+        self._initialized = False
     
     def _initialize_indices(self):
-        """Create vector indices for each room type"""
-        # Configure LlamaIndex to use OpenAI
-        Settings.llm = OpenAI(model="gpt-4-turbo-preview", api_key=os.getenv("OPENAI_API_KEY"))
-        
-        # Create indices for each room type
-        for room_type, principles in DESIGN_KNOWLEDGE.items():
-            documents = [Document(text=principle) for principle in principles]
-            self.indices[room_type] = VectorStoreIndex.from_documents(documents)
+        """Create vector indices for each room type - lazy initialization"""
+        if self._initialized:
+            return
+            
+        try:
+            # Configure LlamaIndex to use OpenAI
+            Settings.llm = OpenAI(model="gpt-4-turbo-preview", api_key=os.getenv("OPENAI_API_KEY"))
+            
+            # Create indices for each room type
+            for room_type, principles in DESIGN_KNOWLEDGE.items():
+                documents = [Document(text=principle) for principle in principles]
+                self.indices[room_type] = VectorStoreIndex.from_documents(documents)
+            
+            self._initialized = True
+        except Exception as e:
+            logger.error(f"Failed to initialize LlamaIndex: {e}")
+            self._initialized = False
     
     def get_design_tips(self, room_type: str, query: str = None) -> List[str]:
         """Get relevant design tips for a room type"""
         room_type = room_type.lower().replace(" ", "_")
         
-        if room_type not in self.indices:
+        # Try to use LlamaIndex if available
+        if query and self._initialized:
+            try:
+                self._initialize_indices()
+                if room_type in self.indices:
+                    query_engine = self.indices[room_type].as_query_engine()
+                    response = query_engine.query(query)
+                    return [str(response)]
+            except Exception as e:
+                logger.warning(f"LlamaIndex query failed: {e}")
+        
+        # Fallback to static knowledge
+        if room_type in DESIGN_KNOWLEDGE:
+            return DESIGN_KNOWLEDGE[room_type]
+        else:
             # Return general tips if room type not found
             return [
                 "Focus on creating a balanced and functional space.",
@@ -67,15 +93,6 @@ class DesignKnowledgeBase:
                 "Choose a cohesive color scheme.",
                 "Consider traffic flow and furniture placement."
             ]
-        
-        if query:
-            # Use query engine for specific questions
-            query_engine = self.indices[room_type].as_query_engine()
-            response = query_engine.query(query)
-            return [str(response)]
-        else:
-            # Return all tips for the room type
-            return DESIGN_KNOWLEDGE.get(room_type, [])
     
     def get_style_recommendations(self, style: str) -> Dict[str, List[str]]:
         """Get recommendations for specific design styles"""
@@ -109,5 +126,15 @@ class DesignKnowledgeBase:
         return style_guides.get(style.lower(), 
             ["Focus on creating a cohesive look that reflects your personal style"])
 
-# Singleton instance
-design_kb = DesignKnowledgeBase() 
+# Create singleton instance
+try:
+    design_kb = DesignKnowledgeBase()
+except Exception as e:
+    logger.error(f"Failed to create DesignKnowledgeBase: {e}")
+    # Create a simple fallback
+    class SimpleDesignKB:
+        def get_design_tips(self, room_type, query=None):
+            return DESIGN_KNOWLEDGE.get(room_type.lower().replace(" ", "_"), [])
+        def get_style_recommendations(self, style):
+            return []
+    design_kb = SimpleDesignKB() 

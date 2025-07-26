@@ -286,6 +286,28 @@ Return as JSON:
             self.plan_markdown = f"# Interior Design Plan\n\n## Room: {self.design_plan.room_analysis.room_type}\n\n"
             self.plan_markdown += f"### Design Style: {self.design_plan.design_style}\n\n"
             self.plan_markdown += f"### Color Scheme: {', '.join(self.design_plan.color_scheme)}\n\n"
+            
+            # Add LlamaIndex design tips if available
+            if LLAMAINDEX_AVAILABLE:
+                try:
+                    # Get room-specific design tips
+                    room_tips = design_kb.get_design_tips(self.design_plan.room_analysis.room_type)
+                    if room_tips:
+                        self.plan_markdown += "### Design Tips:\n"
+                        for tip in room_tips[:3]:  # Show top 3 tips
+                            self.plan_markdown += f"- {tip}\n"
+                        self.plan_markdown += "\n"
+                    
+                    # Get style-specific recommendations
+                    style_tips = design_kb.get_style_recommendations(self.design_plan.design_style)
+                    if style_tips:
+                        self.plan_markdown += f"### {self.design_plan.design_style.title()} Style Guidelines:\n"
+                        for tip in style_tips[:2]:  # Show top 2 style tips
+                            self.plan_markdown += f"- {tip}\n"
+                        self.plan_markdown += "\n"
+                except Exception as e:
+                    logger.warning(f"Failed to get design tips: {e}")
+            
             self.plan_markdown += "### Furniture Needed:\n"
             for item in self.design_plan.furniture_needed:
                 self.plan_markdown += f"- **{item['item']}** ({item['category']}) - Priority: {item['priority']} - Qty: {item['quantity']}\n"
