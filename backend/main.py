@@ -27,8 +27,8 @@ app = FastAPI(title="Interior Design Agent API", version="1.0.0")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for now
-    allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins
+    allow_credentials=False,  # Disable credentials when using wildcard
     allow_methods=["*"],
     allow_headers=["*"],
 )

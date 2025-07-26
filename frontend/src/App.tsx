@@ -115,13 +115,24 @@ function App() {
         }
       )
 
+      console.log('Upload response:', uploadRes.data)
+      
+      if (!uploadRes.data.session_id) {
+        throw new Error('No session ID received from upload')
+      }
+
       const newSessionId = uploadRes.data.session_id
       setSessionId(newSessionId)
 
       // Start agent
-      await axios.post(`${API_URL}/api/agent/start/${newSessionId}`)
-      setIsPolling(true)
-      toast.success('Agent started! Analyzing your room...')
+      try {
+        await axios.post(`${API_URL}/api/agent/start/${newSessionId}`)
+        setIsPolling(true)
+        toast.success('Agent started! Analyzing your room...')
+      } catch (agentError: any) {
+        console.error('Agent start error:', agentError)
+        throw new Error(`Failed to start agent: ${agentError.response?.data?.detail || agentError.message}`)
+      }
     } catch (error: any) {
       console.error('Upload error:', error)
       if (error.response) {
