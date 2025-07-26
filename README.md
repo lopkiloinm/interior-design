@@ -12,57 +12,92 @@ An autonomous AI agent that transforms empty rooms into beautifully designed spa
 - **Real-time Progress**: Track the agent's progress through each step
 - **Markdown Reports**: Get detailed design plans in well-structured markdown
 
-## 🚀 Deployment to Vercel
+## 🚀 Deployment Options
 
-### Prerequisites
-1. A Vercel account
-2. Vercel CLI installed (`npm i -g vercel`)
-3. Environment variables ready:
+This app uses FastAPI backend which works best on platforms that support full Python applications.
+
+### Option 1: Railway (Recommended - Easiest)
+
+1. **Sign up** at [railway.app](https://railway.app)
+
+2. **Install Railway CLI**:
+   ```bash
+   npm install -g @railway/cli
+   ```
+
+3. **Deploy**:
+   ```bash
+   railway login
+   railway link
+   railway up
+   ```
+
+4. **Add environment variables** in Railway dashboard:
    - `OPENAI_API_KEY`
    - `ARCADE_API_KEY`
-   - `USER_ID` (for Arcade)
+   - `USER_ID`
 
-### Deployment Steps
-
-1. **Install Vercel CLI** (if not already installed):
+5. **Deploy frontend separately** on Vercel:
    ```bash
-   npm i -g vercel
-   ```
-
-2. **Login to Vercel**:
-   ```bash
-   vercel login
-   ```
-
-3. **Deploy the project**:
-   ```bash
+   cd frontend
    vercel
    ```
 
-4. **Set environment variables** in Vercel dashboard:
-   - Go to your project settings
-   - Navigate to "Environment Variables"
-   - Add the following:
-     - `OPENAI_API_KEY`: Your OpenAI API key
-     - `ARCADE_API_KEY`: Your Arcade API key
-     - `USER_ID`: Your Arcade user ID
+### Option 2: Render
 
-5. **Deploy to production**:
+1. **Sign up** at [render.com](https://render.com)
+
+2. **Connect your GitHub repo**
+
+3. **Create new Web Service** with:
+   - Runtime: Python
+   - Build: `pip install -r requirements.txt`
+   - Start: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+4. **Add environment variables** in Render dashboard
+
+### Option 3: Heroku
+
+1. **Install Heroku CLI** and login:
    ```bash
-   vercel --prod
+   heroku login
    ```
 
-### Project Structure for Vercel
+2. **Create app and deploy**:
+   ```bash
+   heroku create your-app-name
+   git push heroku main
+   ```
 
-- `/api` - Serverless Python functions
-- `/frontend` - React/Vite frontend
-- `vercel.json` - Deployment configuration
-- `requirements.txt` - Python dependencies
+3. **Set environment variables**:
+   ```bash
+   heroku config:set OPENAI_API_KEY=your_key
+   heroku config:set ARCADE_API_KEY=your_key
+   heroku config:set USER_ID=your_id
+   ```
 
-### Notes
-- The backend runs as serverless functions
-- Uploads are stored temporarily in `/tmp`
-- For production use, consider using external storage (S3, Cloudinary, etc.)
+### Option 4: Docker + Any Cloud
+
+1. **Create Dockerfile** (we can add this if needed)
+2. Deploy to:
+   - Google Cloud Run
+   - AWS App Runner
+   - Azure Container Apps
+   - DigitalOcean App Platform
+
+### Frontend Deployment
+
+The frontend can be deployed separately on:
+- **Vercel** (recommended): `cd frontend && vercel`
+- **Netlify**: `cd frontend && netlify deploy`
+- **GitHub Pages**: With GitHub Actions
+
+### Important Notes
+
+- Update `API_URL` in frontend after backend deployment
+- Consider using a database for production (PostgreSQL, MongoDB)
+- Use cloud storage for images (S3, Cloudinary)
+- Set up proper CORS origins for production
 
 ## 🏗️ Architecture
 
